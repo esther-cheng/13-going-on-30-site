@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background: #c2ebff;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 100px;
+  font-weight: 500;
+  text-shadow:
+    -3px -3px 0 white,
+    3px -3px 0 white,
+    -3px 3px 0 white,
+    3px 3px 0 white;
+  /* font-weight: bold; */
+  margin-bottom: 50px;
+  font-family: 'Pixelify Sans', sans-serif;
+}
+
+.editors {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.editorBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.editor {
+  min-width: 250px;
+  min-height: 150px;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: #fff;
+  outline: none;
+  white-space: pre-wrap;
+}
+
+.editor:empty:before {
+  content: attr(placeholder);
+  color: #888;
+}
+
+.editor div,
+.editor br {
+  display: list-item;
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+.button,
+.activeButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.button {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.activeButton {
+  background: #0070f3;
+  color: white;
+}
+/* 
+.inputRow {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  flex: 1;
+} */
+
+.addButton {
+  /* background: #4caf50; */
+  border: none;
+  /* padding: 0 1rem; */
+  cursor: pointer;
+      height: 100px;
+    width: 300px;
+    background-color: #ffe9a0;
+    border: 8px solid #e9b509;
+    outline: 8px solid black;
+    font-family:'Pixelify Sans', sans-serif;
+    font-size: 80px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.lists {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.results {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.score {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0070f3;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.warning {
+  color: #d32f2f;
+  margin-top: 1rem;
+}
+
+.success {
+  color: #388e3c;
+  margin-top: 1rem;
+}
+
+.goals {
+    height: 100px;
+    width: 300px;
+    background-color: #bdd9b0;
+    border: 8px solid #92b981;
+    outline: 8px solid black;
+    font-family:'Pixelify Sans', sans-serif;
+    font-size: 80px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.values {
+    height: 100px;
+    width: 300px;
+    background-color: #a2d8e6;
+    border: 8px solid #59b5cf;
+    outline: 8px solid black;
+    font-family:'Pixelify Sans', sans-serif;
+    font-size: 80px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.house {
+    height: 750px;
+    margin-top: -200px;
+    margin-bottom: -150px;
+}
