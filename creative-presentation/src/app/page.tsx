@@ -42,7 +42,21 @@ export default function Home() {
   };
 
   return (
-    <main className={styles.container}>
+    <main
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Arial, sans-serif",
+        backgroundImage: "url('/img/sky.webp')", // ✅ no /public here
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <h1 className={styles.title}>13 Going on 30</h1>
 
       <div className={styles.editors}>
