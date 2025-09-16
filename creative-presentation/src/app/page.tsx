@@ -12,7 +12,7 @@ export default function Home() {
   const parseText = (text: string) => {
     return text
       .split("\n")
-      .map((line) => line.trim())
+      .map((line) => line.trim().replace(/^•\s*/, "")) // Remove bullet points
       .filter((line) => line.length > 0);
   };
 
@@ -22,6 +22,26 @@ export default function Home() {
 
   const handleValuesChange = (e: React.FormEvent<HTMLDivElement>) => {
     setValues(parseText(e.currentTarget.innerText));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const selection = window.getSelection();
+      const range = selection?.getRangeAt(0);
+      if (range) {
+        const br = document.createElement('br');
+        const textNode = document.createTextNode('• ');
+        range.deleteContents();
+        range.insertNode(br);
+        range.collapse(false);
+        range.insertNode(textNode);
+        range.setStartAfter(textNode);
+        range.setEndAfter(textNode);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+      }
+    }
   };
 
   const analyze = async () => {
@@ -50,7 +70,7 @@ export default function Home() {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "Arial, sans-serif",
-        backgroundImage: "url('/img/sky.webp')", // ✅ no /public here
+        backgroundImage: "url('/img/sky.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -62,65 +82,63 @@ export default function Home() {
       <div className={styles.editors}>
         <div className={styles.editorBox}>
           <div className={styles.goals}>Goals</div>
-          <input
+          <div
             className={styles.editor}
             contentEditable
             onInput={handleGoalsChange}
-            placeholder="Type your goals here..."
+            onKeyDown={handleKeyDown}
+            data-placeholder="• Enter your goals here..."
             suppressContentEditableWarning
-          ></input>
+            id={styles.goalEditor}
+          />
         </div>
-        <img src="img/house.png" className={styles.house}/>
+        
+        {!result ? (
+          <div className={styles.houseContainer}>
+            <img src="img/house.png" className={styles.house} />
+            {loading && (
+              <div className={styles.sparkles}>
+                {Array.from({ length: 50 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className={styles.sparkle}
+                    style={{
+                      top: `${Math.random() * 100}%`,
+                      left: `${Math.random() * 100}%`,
+                      animationDelay: `${Math.random() * 2}s`,
+                      animationDuration: `${1 + Math.random() * 1.5}s`,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className={styles.resultBox}>
+            <div className={styles.scoreDisplay}>Score: {result.score}%</div>
+            <p className={styles.explanation}>{result.explanation}</p>
+          </div>
+        )}
+        
         <div className={styles.editorBox}>
           <div className={styles.values}>Values</div>
-          <input
+          <div
             className={styles.editor}
             contentEditable
             onInput={handleValuesChange}
-            placeholder="Type your values here..."
+            onKeyDown={handleKeyDown}
+            data-placeholder="• Enter your values here..."
             suppressContentEditableWarning
-          ></input>
+            id={styles.valueEditor}
+          />
         </div>
       </div>
-      {/* <div className={styles.toggle}>
-        <button onClick={() => setMode("goal")} className={mode === "goal" ? styles.activeButton : styles.button}>
-          Add Goal
-        </button>
-        <button onClick={() => setMode("value")} className={mode === "value" ? styles.activeButton : styles.button}>
-          Add Value
-        </button>
-      </div> */}
 
-      {/* <div className={styles.inputRow}>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={mode === "goal" ? "Enter a goal..." : "Enter a value..."}
-          className={styles.input}
-        />
-        <button onClick={addItem} className={styles.addButton}>Add</button>
-      </div> */}
+      <button onClick={analyze} className={styles.addButton} disabled={loading}>
+        {loading ? "Aligning..." : "Align"}
+      </button>
 
-      {/* <div className={styles.lists}>
-        <div>
-          <img src="img/goals.png" className={styles.goals}/>
-          <div className={styles.goals}>Goals</div>
-          <ul>{goals.map((g, i) => <li key={i}>{g}</li>)}</ul>
-        </div>
-        <div>
-          <div className={styles.values}>Values</div>
-          <ul>{values.map((v, i) => <li key={i}>{v}</li>)}</ul>
-        </div>
-      </div> */}
-
-      <button onClick={analyze} className={styles.addButton} disabled={loading}>Align</button>
-
-      {result && (
-        <div className={styles.results}>
-          <h2>Score: {result.score}%</h2>
-          <p>{result.explanation}</p>
-        </div>
-      )}
+      {/* Remove the old results display since we're showing it in place of the house */}
     </main>
   );
 }
