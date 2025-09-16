@@ -32,12 +32,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px; /* Add gap between title and input */
+  gap: 15px;
 }
 
 .editor {
-  max-width: 300px;  /* keep it from stretching beyond its container */
-  width: 100%;      /* let it fill the editorBox */
+  max-width: 300px;
+  width: 100%;
   min-height: 200px;
   border: 8px solid #666;
   outline: 8px solid black;
@@ -49,9 +49,9 @@
   line-height: 1.4;
   margin-top: 15px;
   transition: box-shadow .3s ease;
-  white-space: pre-wrap;       /* preserves line breaks, wraps text */
-  word-break: break-word;      /* ensures long words break */
-  overflow-wrap: break-word;   /* ensures wrapping in modern browsers */
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 #goalEditor {
@@ -150,14 +150,25 @@
 .houseContainer {
   position: relative;
   display: inline-block;
+  overflow: visible; /* Allow sparkles to show outside container */
 }
 
 .house {
-  height: 750px;
-  margin-top: -200px;
+  height: 700px;
+  margin-right: 50px;
+  margin-left: 50px;
+  margin-top: -225px;
   margin-bottom: -150px;
   display: block;
   z-index: 0;
+}
+
+.resultContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
 }
 
 .resultBox {
@@ -165,14 +176,12 @@
   max-height: 400px;
   max-width: 600px;
   padding: 40px;
-  /* width: px; */
-  margin-top: -200px;
-  margin-bottom: -150px;
+  /* margin-top: -200px; */
+  /* margin-bottom: -150px; */
   background-color: #f6caec;
   border: 8px solid #ad7aa1;
   outline: 8px solid black;
   font-family:'Pixelify Sans', sans-serif;
-  /* padding: 20px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -180,6 +189,8 @@
   text-align: center;
   justify-self: center;
   align-self: center;
+  z-index: 10; /* Ensure it's above the burst effect */
+  position: relative;
 }
 
 .scoreDisplay {
@@ -197,40 +208,99 @@
   margin: 0;
 }
 
+/* Glitter shower effect over the house */
 .sparkles {
+  position: absolute;
+  top: -50px; /* Start above the house */
+  left: 0;
+  width: 100%;
+  height: calc(100% + 100px); /* Extend below the house */
+  pointer-events: none;
+  overflow: visible;
+  z-index: 5; /* Above house but below result box */
+}
+
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(45deg, gold, rgb(255, 215, 0), rgb(255, 122, 233));
+  transform: rotate(45deg);
+  opacity: 0;
+  animation: glitterShower infinite ease-in;
+  border-radius: 1px;
+  box-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+}
+
+@keyframes glitterShower {
+  0% {
+    opacity: 1;
+    transform: translateY(0px) translateX(0px) rotate(45deg) scale(1);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(50px) translateX(5px) rotate(90deg) scale(1.1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(350px) translateX(-10px) rotate(180deg) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(750px) translateX(15px) rotate(315deg) scale(0.5);
+  }
+}
+
+/* Burst effect from behind the score box */
+.burst {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 1; /* Behind the result box */
 }
 
-.sparkle {
+.burstSparkle {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: linear-gradient(45deg, gold, rgb(105, 50, 188), rgb(255, 122, 233));
+  background: linear-gradient(45deg, white, gold, hotpink, rgb(138, 43, 226));
   transform: rotate(45deg);
   opacity: 0;
-  animation-name: glitter;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  animation: burstEffect 1.2s ease-out forwards;
+  border-radius: 1px;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  top: 50%;
+  left: 50%;
 }
 
-@keyframes glitter {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(0.5) rotate(45deg);
-  }
-  50% {
+@keyframes burstEffect {
+  0% {
     opacity: 1;
-    transform: scale(1.4) rotate(45deg);
+    transform: translate(-50%, -50%) scale(0.5) rotate(45deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) rotate(90deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--end-x, 0px)), 
+                        calc(-50% + var(--end-y, 0px)))
+               scale(0.3) rotate(315deg);
   }
 }
 
 @keyframes fadeInScale {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
+  from { 
+    opacity: 0; 
+    transform: scale(0.8); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
 }

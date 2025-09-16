@@ -98,15 +98,15 @@ export default function Home() {
             <img src="img/house.png" className={styles.house} />
             {loading && (
               <div className={styles.sparkles}>
-                {Array.from({ length: 50 }).map((_, i) => (
+                {Array.from({ length: 40 }).map((_, i) => (
                   <span
                     key={i}
                     className={styles.sparkle}
                     style={{
-                      top: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 20 - 10}%`, // Start near the roof
                       left: `${Math.random() * 100}%`,
-                      animationDelay: `${Math.random() * 2}s`,
-                      animationDuration: `${1 + Math.random() * 1.5}s`,
+                      animationDelay: `${Math.random() * 3}s`,
+                      animationDuration: `${2 + Math.random() * 2}s`,
                     }}
                   />
                 ))}
@@ -114,9 +114,35 @@ export default function Home() {
             )}
           </div>
         ) : (
-          <div className={styles.resultBox}>
-            <div className={styles.scoreDisplay}>Score: {result.score}%</div>
-            <p className={styles.explanation}>{result.explanation}</p>
+          <div className={styles.resultContainer}>
+            {/* Sparkle burst behind the score box */}
+            <div className={styles.burst}>
+              {Array.from({ length: 36 }).map((_, i) => {
+                const angle = (i / 36) * 360; // Distribute evenly in a circle
+                const radian = (angle * Math.PI) / 180;
+                const distance = 250;
+                const endX = Math.cos(radian) * distance;
+                const endY = Math.sin(radian) * distance;
+                
+                return (
+                  <span
+                    key={i}
+                    className={styles.burstSparkle}
+                    style={{
+                      animationDelay: `${i * 0.02}s`,
+                      '--end-x': `${endX}px`,
+                      '--end-y': `${endY}px`,
+                    } as React.CSSProperties}
+                  />
+                );
+              })}
+            </div>
+            
+            {/* Score box */}
+            <div className={styles.resultBox}>
+              <div className={styles.scoreDisplay}>Score: {result.score}%</div>
+              <p className={styles.explanation}>{result.explanation}</p>
+            </div>
           </div>
         )}
         
