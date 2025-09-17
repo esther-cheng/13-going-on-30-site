@@ -18,10 +18,18 @@ export default function Home() {
 
   const handleGoalsChange = (e: React.FormEvent<HTMLDivElement>) => {
     setGoals(parseText(e.currentTarget.innerText));
+    // Clear results when goals change
+    if (result) {
+      setResult(null);
+    }
   };
 
   const handleValuesChange = (e: React.FormEvent<HTMLDivElement>) => {
     setValues(parseText(e.currentTarget.innerText));
+    // Clear results when values change
+    if (result) {
+      setResult(null);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -45,7 +53,10 @@ export default function Home() {
   };
 
   const analyze = async () => {
+    // Clear any existing results first
+    setResult(null);
     setLoading(true);
+    
     console.log(goals);
     console.log(values);
     const resp = await fetch("/api/analyze", {
