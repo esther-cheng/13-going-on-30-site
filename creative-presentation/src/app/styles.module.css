@@ -151,6 +151,7 @@
   position: relative;
   display: inline-block;
   overflow: visible; /* Allow sparkles to show outside container */
+  animation: fadeInScale 0.6s ease forwards;
 }
 
 .house {
